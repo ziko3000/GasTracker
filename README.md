@@ -37,7 +37,7 @@ To run this project, you'll need to have:
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/ziko3000/Fear-and-Greed-Index
+    git clone https://github.com/ziko3000/Fear-and-Greed-Index](https://github.com/ziko3000/GasTracker
     ```
 
 2. Change into the cloned repository:
