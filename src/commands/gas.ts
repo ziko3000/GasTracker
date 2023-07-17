@@ -10,21 +10,21 @@ export class GasCommand {
       const gasPrices = await this.getGasPrices();
 
       if (gasPrices.length === 0) {
-        interaction.reply({ embeds: [this.buildEmbed("Error retrieving gas prices. Please try again later.")], ephemeral: true });
+        await interaction.reply({ embeds: [this.buildEmbed("Error retrieving gas prices. Please try again later.")], ephemeral: true });
         return;
       }
 
-      const embed = this.buildEmbed("").setTitle("⛽ Current gas prices").addFields(
-        { name: "Slow 🐢 | >10 minutes", value: gasPrices[0] + " Gwei", inline: false },
-        { name: "Average 🚶 | 3 minutes", value: gasPrices[1] + " Gwei", inline: false },
-        { name: "Fast ⚡ | 15 seconds", value: gasPrices[2] + " Gwei", inline: false },
-      );
+      const embed = this.buildEmbed("")
+        .setTitle("⛽ Current gas prices")
+        .addFields(
+          { name: "Slow 🐢 | >10 minutes", value: gasPrices[0] + " Gwei", inline: false },
+          { name: "Average 🚶 | 3 minutes", value: gasPrices[1] + " Gwei", inline: false },
+          { name: "Fast ⚡ | 15 seconds", value: gasPrices[2] + " Gwei", inline: false },
+        );
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
       console.error("Failed to reply to the interaction:", error);
-      const errorMessage = (error instanceof Error) ? error.message : 'Unknown error occurred';
-      throw new Error(`Failed to reply to the interaction: ${errorMessage}`);
     }
   }
 
@@ -40,11 +40,11 @@ export class GasCommand {
 
       if (response.status === 200 && response.data && response.data.status === '1') {
         const { SafeGasPrice, ProposeGasPrice, FastGasPrice } = response.data.result;
-        return [SafeGasPrice, ProposeGasPrice, FastGasPrice];
+        return [SafeGasPrice, ProposeGasPrice, FastGasPrice].map(Number);
       }
       return [];
     } catch (error) {
-      console.log(error);
+      console.error("Error getting gas prices:", error);
       return [];
     }
   }
@@ -58,5 +58,4 @@ export class GasCommand {
   
     return embed;
   }
-  
 }

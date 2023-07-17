@@ -14,10 +14,11 @@ export class HelpCommand {
     try {
       const helpEmbed = new EmbedBuilder()
         .setTitle('Bot Help')
-        .setDescription('This bot provides information about ⛽ Current gas prices. You can interact with the bot using the following commands:')
+        .setDescription('This bot provides information about the Fear and Greed Index. You can interact with the bot using the following commands:')
         .setColor('#0099ff')
         .addFields(
-          { name: '/gas', value: '** - Get Ethereum gas prices**' },
+          { name: '/fear', value: '** - Get the current Fear and Greed Index**' },
+          { name: '/greed', value: '** - Get the current Fear and Greed Index**' },
           { name: '/help', value: '** - Get help about the bot and its commands**' }
         );
 
