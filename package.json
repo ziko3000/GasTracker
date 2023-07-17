@@ -1,20 +1,24 @@
 {
-  "name": "ethergas",
+  "name": "fear",
   "version": "1.0.0",
-  "description": "Discord bot to view curreny current prices.",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/bot.ts"
   },
-  "author": "Dorian349",
+  "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^20.4.1",
     "axios": "^1.4.0",
     "discord.js": "^14.11.0",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7"
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
   },
   "devDependencies": {
-    "typescript": "^5.1.6"
+    "@types/pg": "^8.10.2"
   }
 }
