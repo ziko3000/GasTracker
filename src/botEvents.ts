@@ -1,20 +1,18 @@
-import { Client, ActivityType, Interaction, CommandInteraction,PresenceData } from 'discord.js';
+import { Client, ActivityType, Interaction, CommandInteraction, PresenceData } from 'discord.js';
 import { CommandHandler } from './CommandHandler';
 import { GasCommand } from './commands/gas';
-
 
 /**
  * Class handling bot events.
  * @constructor
  * @param {Client} client - The Discord.js Client instance.
- * @param {FearGreedIndexAPI} api - The Fear and Greed Index API instance.
  * @param {CommandHandler} commandHandler - The Command Handler instance.
- * @param {Database} database - The Database instance.
+ * @param {GasCommand} gasCommand - The Gas Command instance.
  */
 export class BotEvents {
   client: Client;
   commandHandler: CommandHandler;
-  gasCommand: GasCommand
+  gasCommand: GasCommand;
 
   constructor(client: Client, commandHandler: CommandHandler, gasCommand: GasCommand) {
     this.client = client;
@@ -31,26 +29,26 @@ export class BotEvents {
   }
 
   /**
-   * Handles the 'ready' event of the bot. Updates bot presence, registers commands and schedules 
+   * Handles the 'ready' event of the bot. Updates bot presence, registers commands, and schedules 
    * Fear & Greed Index data storing.
    * @return {Promise<void>}
    */
   async onReady(): Promise<void> {
-    console.log(`Logged in as ${this.client.user!.tag}`);
-
-    // Update bot presence and set up a periodic update every 30 seconds
-    this.updateBotPresence();
-    setInterval(this.updateBotPresence.bind(this), 30000);
-
-    // Register the slash commands to Discord
     try {
+      console.log(`Logged in as ${this.client.user!.tag}`);
+
+      // Update bot presence and set up a periodic update every 30 seconds
+      await this.updateBotPresence();
+      setInterval(this.updateBotPresence.bind(this), 30000);
+
+      // Register the slash commands to Discord
       await this.commandHandler.registerCommandsToDiscord(this.client);
       console.log('Slash commands registered successfully!');
-    } catch (error) {
-      console.error('Failed to register slash commands:', error);
+
+      // Schedule the Fear & Greed Index data storing to run every 24 hours
+    } catch (error: any) {
+      console.error('Error during bot initialization:', error.message);
     }
-    
-    // Schedule the Fear & Greed Index data storing to run every 24 hours
   }
 
   /**
@@ -60,12 +58,14 @@ export class BotEvents {
   async updateBotPresence(): Promise<void> {
     try {
       const gasPrices = await this.gasCommand.getGasPrices();
-      if(gasPrices.length === 3) {
+      if (gasPrices.length === 3) {
         const presenceData: PresenceData = {
-          activities: [{
-            name: `⚡Fast Gas: ${gasPrices[2]} Gwei | 🚶Average Gas: ${gasPrices[1]} Gwei | 🐢Slow Gas: ${gasPrices[0]} Gwei`,
-            type: ActivityType.Watching,
-          }],
+          activities: [
+            {
+              name: `⚡Fast Gas: ${gasPrices[2]} Gwei | 🚶Average Gas: ${gasPrices[1]} Gwei | 🐢Slow Gas: ${gasPrices[0]} Gwei`,
+              type: ActivityType.Watching,
+            },
+          ],
           status: 'online',
         };
         await this.client.user!.setPresence(presenceData);
@@ -73,8 +73,8 @@ export class BotEvents {
       } else {
         console.error('Failed to update bot presence: Invalid gas prices.');
       }
-    } catch (error) {
-      console.error('Failed to update bot presence:', error);
+    } catch (error: any) {
+      console.error('Error updating bot presence:', error.message);
     }
   }
 }
