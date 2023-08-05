@@ -1,0 +1,11 @@
+{
+    "apps": [
+        {
+            "name": "fear_greed_index",
+            "script": "deno",
+            "args" : "task run_bot",
+            "watch": ["./"],
+            "watch_delay": 1000
+        }
+    ]
+  }

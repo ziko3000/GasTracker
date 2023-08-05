@@ -1,6 +1,7 @@
-import { Client, SlashCommandBuilder, REST, Routes, CommandInteraction } from 'discord.js';
-import { HelpCommand } from './commands/help';
-import { GasCommand } from './commands/gas';
+import { Client, SlashCommandBuilder, REST, Routes, CommandInteraction } from 'discordjs';
+import { HelpCommand } from './commands/help.ts';
+import { GasCommand } from './commands/gas.ts';
+import { logger } from '../deps.ts';
 
 /**
  * Interface for the Bot commands.
@@ -42,18 +43,18 @@ export class CommandHandler {
    * @param client - The Discord client instance.
    * @returns A Promise that resolves when the commands are successfully registered.
    */
-  async registerCommandsToDiscord(client: Client): Promise<void> {
+  async registerCommandsToDiscord(): Promise<void> {
     try {
       const commandBuilders = Array.from(this.commands.values()).map(({ name, description }) =>
         new SlashCommandBuilder().setName(name).setDescription(description).toJSON()
       );
 
-      const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN!);
-      await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID!), { body: commandBuilders });
+      const rest = new REST({ version: '10' }).setToken(Deno.env.get("BOT_TOKEN")!);
+      await rest.put(Routes.applicationCommands(Deno.env.get("APPLICATION_ID")!), { body: commandBuilders });
 
-      console.log('Slash commands registered successfully!');
+      logger.info('Slash commands registered successfully!');
     } catch (error: any) {
-      console.error('Failed to register slash commands:', error.message);
+      logger.error(`Failed to register slash commands: ${error.message}`, error);
     }
   }
 
@@ -65,12 +66,13 @@ export class CommandHandler {
     try {
       const command = this.commands.get(interaction.commandName);
       if (command) {
+        logger.info(`Received command ${interaction.commandName}`);
         await command.execute(interaction);
-      } else {
-        console.error(`Command not found: ${interaction.commandName}`);
+      } else {;
+        logger.error(`Command not found: ${interaction.commandName}`);
       }
     } catch (error: any) {
-      console.error('Error handling command:', error.message);
+      logger.error(`Error handling command: ${error.message}`, error);
     }
   }
 }

@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "/": "./",
+    "./": "./",
+
+    "axiod": "https://deno.land/x/axiod@0.26.2/mod.ts",
+    "discordjs": "npm:discord.js@14.12.1"
+  },
+  "tasks": {
+    "run_bot": "denon run --allow-env --allow-net --allow-read /src/bot.ts"
+  }
+}

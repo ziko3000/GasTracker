@@ -1,11 +1,8 @@
-import { Client } from 'discord.js';
-import { config as dotenvConfig } from  'dotenv';
-import { CommandHandler } from './CommandHandler';
-import { BotEvents } from './botEvents';
-import { GasCommand } from './commands/gas';
-
-
-dotenvConfig();
+import { Client } from 'discordjs';
+import { logger } from '../deps.ts';
+import { CommandHandler } from './CommandHandler.ts';
+import { BotEvents } from './botEvents.ts';
+import { GasCommand } from './commands/gas.ts';
 
 
 class Bot {
@@ -15,10 +12,10 @@ class Bot {
   botEvents: BotEvents = new BotEvents(this.client, this.commandHandler, this.gasCommand);
 
   login(): void {
-    this.client.login(process.env.BOT_TOKEN);
-    // this.botService.storeFearGreedIndex();
+    this.client.login(Deno.env.get("BOT_TOKEN"));
   }
 }
 
+logger.info("Starting bot...");
 // Create a new Bot instance and login
 new Bot().login();

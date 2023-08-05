@@ -1,8 +1,6 @@
-import { CommandInteraction, EmbedBuilder } from 'discord.js';
-import axios from 'axios';
-import { config as dotenvConfig } from  'dotenv';
-
-dotenvConfig();
+import { CommandInteraction, EmbedBuilder } from 'discordjs';
+import axios from 'axiod';
+import { logger } from '../../deps.ts';
 
 export class GasCommand {
   async execute(interaction: CommandInteraction): Promise<void> {
@@ -24,7 +22,7 @@ export class GasCommand {
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
-      console.error("Failed to reply to the interaction:", error);
+      logger.error(`Failed to reply to the interaction: ${error.message}`, error);
     }
   }
 
@@ -33,7 +31,7 @@ export class GasCommand {
       const params = {
         module: 'gastracker',
         action: 'gasoracle',
-        apikey: process.env.apikey,
+        apikey: Deno.env.get("ETHERSCAN_API_KEY")!,
       };
 
       const response = await axios.get('https://api.etherscan.io/api', { params });
@@ -44,7 +42,7 @@ export class GasCommand {
       }
       return [];
     } catch (error) {
-      console.error("Error getting gas prices:", error);
+      logger.error(`Error getting gas prices: ${error.message}`, error);
       return [];
     }
   }

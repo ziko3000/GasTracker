@@ -1,6 +1,7 @@
-import { Client, ActivityType, Interaction, CommandInteraction, PresenceData } from 'discord.js';
-import { CommandHandler } from './CommandHandler';
-import { GasCommand } from './commands/gas';
+import { Client, ActivityType, Interaction, CommandInteraction, PresenceData } from 'discordjs';
+import { CommandHandler } from './CommandHandler.ts';
+import { GasCommand } from './commands/gas.ts';
+import { logger } from '../deps.ts';
 
 /**
  * Class handling bot events.
@@ -23,6 +24,7 @@ export class BotEvents {
     this.client.on('ready', () => this.onReady());
     this.client.on('interactionCreate', async (interaction: Interaction) => {
       if (interaction.isCommand()) {
+        logger.info(`Received command ${interaction.commandName}`);
         await this.commandHandler.handleCommand(interaction as CommandInteraction);
       }
     });
@@ -35,19 +37,19 @@ export class BotEvents {
    */
   async onReady(): Promise<void> {
     try {
-      console.log(`Logged in as ${this.client.user!.tag}`);
+      logger.info(`Logged in as ${this.client.user!.tag}`);
 
       // Update bot presence and set up a periodic update every 30 seconds
       await this.updateBotPresence();
       setInterval(this.updateBotPresence.bind(this), 30000);
 
       // Register the slash commands to Discord
-      await this.commandHandler.registerCommandsToDiscord(this.client);
-      console.log('Slash commands registered successfully!');
+      await this.commandHandler.registerCommandsToDiscord();
+      logger.info('Slash commands registered successfully!');
 
       // Schedule the Fear & Greed Index data storing to run every 24 hours
-    } catch (error: any) {
-      console.error('Error during bot initialization:', error.message);
+    } catch (error) {
+      logger.error(`Error during bot initialization: ${error.message}`, error);
     }
   }
 
@@ -69,12 +71,12 @@ export class BotEvents {
           status: 'online',
         };
         await this.client.user!.setPresence(presenceData);
-        console.log('Bot presence updated.');
+        logger.info('Bot presence updated.');
       } else {
-        console.error('Failed to update bot presence: Invalid gas prices.');
+        logger.error('Failed to update bot presence: Invalid gas prices.');
       }
     } catch (error: any) {
-      console.error('Error updating bot presence:', error.message);
+      logger.error(`Error updating bot presence: ${error.message}`, error);
     }
   }
 }

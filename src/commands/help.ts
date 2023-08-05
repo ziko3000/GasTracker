@@ -1,4 +1,5 @@
-import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
+import { CommandInteraction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discordjs';
+import { logger } from '../../deps.ts';
 
 /**
  * HelpCommand class for providing help about the bot and its commands.
@@ -46,8 +47,7 @@ export class HelpCommand {
 
       await interaction.reply({ embeds: [helpEmbed], components: [row1, row2, row3] });
     } catch (error) {
-      const message = (error instanceof Error) ? error.message : 'Unexpected error occurred';
-      throw new Error(`Failed to reply to the interaction: ${message}`);
+      logger.error(`Failed to reply to interaction: ${error.message}`, error);
     }
   }
 }
