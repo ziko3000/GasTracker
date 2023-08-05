@@ -1,7 +1,7 @@
 {
     "apps": [
         {
-            "name": "fear_greed_index",
+            "name": "eth_gas_tracker",
             "script": "deno",
             "args" : "task run_bot",
             "watch": ["./"],

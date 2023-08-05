@@ -14,11 +14,14 @@ A Discord bot that allows you to get the current Gas for cryptocurrency markets 
 
 ## 📝 Table of Contents
 
-- [Getting Started](#getting_started)
-- [Usage](#usage)
-- [Adding Commands](#adding_commands)
-- [Contributing](#contributing)
-- [License](#license)
+- [📝 Table of Contents](#-table-of-contents)
+- [🏁 Getting Started ](#-getting-started-)
+  - [Prerequisites](#prerequisites)
+  - [Installing(Windows)](#installingwindows)
+  - [Using PM2 to keep bot alive](#using-pm2-to-keep-bot-alive)
+- [🎈 Usage ](#-usage-)
+- [⛏️ Adding Commands ](#️-adding-commands-)
+- [📄 License ](#-license-)
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -26,7 +29,7 @@ A Discord bot that allows you to get the current Gas for cryptocurrency markets 
 
 To run this project, you'll need to have:
 
-- Node.js (version 14.0.0 or newer)
+- Deno (version 1.34.3 or newer)
 - A Discord bot token, which you can get by creating a bot on the [Discord Developer Portal](https://discord.com/developers/applications)
 - Discord.js 14
 - Typescript
@@ -36,56 +39,48 @@ To run this project, you'll need to have:
 
 1. Clone this repository:
 
-    ```bash
-    git clone https://github.com/ziko3000/Fear-and-Greed-Index](https://github.com/ziko3000/GasTracker
-    ```
+```bash
+git clone https://github.com/ziko3000/Fear-and-Greed-Index](https://github.com/ziko3000/GasTracker
+```
 
 2. Change into the cloned repository:
 
-    ```bash
-    cd your-repo-name
-    ```
+```bash
+cd your-repo-name
+```
 
-3. Install the dependencies:
+3. Create an .env file in the root of your project and insert your bot token:
 
-    ```bash
-    npm install
-    ```
+```env
+BOT_TOKEN=YourDiscordBotToken
+APPLICATION_ID=YourApplicationId
+ETHERSCAN_API_KEY = YourEtherscanAPIkey
+```
 
-4. Create an .env file in the root of your project and insert your bot token:
-
-    ```env
-    BOT_TOKEN=YourDiscordBotToken
-    APPLICATION_ID=YourApplicationId
-    ```
-
-5. Run the bot:
-
-    ```bash
-    npm run start
-
-    ```
-### Installing Nodemon on Linux
-
-[Nodemon](https://nodemon.io/) is a utility that will monitor for any changes in your source and automatically restart your server, perfect for development. Follow these steps to install it on Linux:
-
-1. To install Nodemon globally (available to all your Node.js projects), you can run:
-
-    ```bash
-    npm install -g nodemon
-    ```
-
-    If you're facing permission issues, you may need to prepend `sudo`:
-
-    ```bash
-    sudo npm install -g nodemon
-    ```
-
-That's it! You've successfully installed Nodemon on your Linux machine. Now, you can use the `nodemon` command to run your bot:
+4. Run the bot:
 
 ```bash
-    nodemon src/bot.ts
-```    
+deno task run_bot
+```
+### Using PM2 to keep bot alive
+
+[PM2](https://www.npmjs.com/package/pm2) is a process manager for Node.js applications with a built-in load balancer. It allows you to keep applications alive forever and reload them without downtime. It's perfect for production environments. Here are the steps to install it:
+
+To install PM2 globally (available to all your Node.js/Deno projects), you can run:
+```bash
+npm install -g pm2
+```
+
+If you're facing permission issues, you may need to prepend sudo:
+```bash
+sudo npm install -g pm2
+```
+
+Congratulations! You've successfully installed PM2 on your Linux machine. Now, you can use the pm2 command to run your bot:
+```bash
+pm2 start pm2_config.json
+```
+
 ## 🎈 Usage <a name = "usage"></a>
 
 This bot supports the following Slash commands:
